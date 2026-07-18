@@ -119,7 +119,7 @@ public class WalletDbContext :
                 .IsRequired();
 
             b.Property(x => x.InitialBalance)
-                .HasColumnType("decimal(18,2)");
+                .HasColumnType("decimal(18,0)");
 
             b.HasOne<IdentityUser>()
                 .WithMany()
@@ -154,7 +154,7 @@ public class WalletDbContext :
             b.ConfigureByConvention(); //auto configure for the base class props
 
             b.Property(x => x.Balance)
-                .HasColumnType("decimal(18,2)");
+                .HasColumnType("decimal(18,0)");
 
             b.HasIndex(x => x.WalletId).IsUnique();
         });
@@ -170,7 +170,7 @@ public class WalletDbContext :
                 .IsRequired();
 
             b.Property(x => x.Volume)
-                .HasColumnType("decimal(18,2)");
+                .HasColumnType("decimal(18,0)");
 
             b.HasIndex(x => x.WalletId);
         });
