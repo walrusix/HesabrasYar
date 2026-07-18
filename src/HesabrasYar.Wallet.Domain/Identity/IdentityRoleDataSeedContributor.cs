@@ -16,19 +16,16 @@ public class IdentityRoleDataSeedContributor : IDataSeedContributor, ITransientD
 
     private readonly IdentityRoleManager _roleManager;
     private readonly IdentityUserManager _userManager;
-    private readonly WalletManager _walletManager;
-    private readonly IWalletRepository _walletRepository;
+    private readonly IUserWalletCreationService _userWalletCreationService;
 
     public IdentityRoleDataSeedContributor(
         IdentityRoleManager roleManager,
         IdentityUserManager userManager,
-        WalletManager walletManager,
-        IWalletRepository walletRepository)
+        IUserWalletCreationService userWalletCreationService)
     {
         _roleManager = roleManager;
         _userManager = userManager;
-        _walletManager = walletManager;
-        _walletRepository = walletRepository;
+        _userWalletCreationService = userWalletCreationService;
     }
 
     [UnitOfWork]
@@ -91,25 +88,7 @@ public class IdentityRoleDataSeedContributor : IDataSeedContributor, ITransientD
             EnsureSucceeded(await _userManager.AddToRoleAsync(user, roleName), $"add '{userName}' to role '{roleName}'");
         }
 
-        await CreateWalletForUserIfNotExistsAsync(user);
-    }
-
-    private async Task CreateWalletForUserIfNotExistsAsync(IdentityUser user)
-    {
-        var walletName = $"{user.UserName}-Wallet";
-
-        if (await _walletRepository.NameExistsAsync(walletName))
-        {
-            return;
-        }
-
-        await _walletManager.CreateAsync(
-            walletName,
-            WalletType.Personal,
-            CurrencyType.IRR,
-            user.Id,
-            0m
-        );
+        await _userWalletCreationService.EnsureDefaultWalletAsync(user.Id, user.UserName);
     }
 
     private static void EnsureSucceeded(Microsoft.AspNetCore.Identity.IdentityResult result, string action)
