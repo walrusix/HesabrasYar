@@ -70,7 +70,10 @@ abp install-libs
 
 #### Create the Database
 
-Run `HesabrasYar.Wallet.DbMigrator` to create the initial database. This should be done in the first run. It is also needed if a new database migration is added to the solution later.
+Run `HesabrasYar.Wallet.DbMigrator` to create the initial database. This should be done in the first run, and it is also needed if a new database migration is added to the solution later.
+
+- The migrator uses the `appsettings.json` and `appsettings.secrets.json` files in `src/HesabrasYar.Wallet.DbMigrator`.
+- For local development, the default SQL Server connection string is configured with `User Id=sa;Password=123456`.
 
 ### Solution structure
 

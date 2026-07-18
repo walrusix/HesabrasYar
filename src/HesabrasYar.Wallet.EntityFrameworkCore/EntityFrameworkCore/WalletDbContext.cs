@@ -88,9 +88,19 @@ public class WalletDbContext :
             b.ToTable(WalletConsts.DbTablePrefix + "Wallets", WalletConsts.DbSchema);
             b.ConfigureByConvention(); //auto configure for the base class props
 
-            b.Property(x => x.Code)
-                .UseIdentityColumn(10001, 1)
-                .IsRequired();
+            if (Database.ProviderName?.Contains("Sqlite") == true)
+            {
+                b.Property(x => x.Code)
+                    .HasValueGenerator<WalletCodeValueGenerator>()
+                    .ValueGeneratedOnAdd()
+                    .IsRequired();
+            }
+            else
+            {
+                b.Property(x => x.Code)
+                    .UseIdentityColumn(10001, 1)
+                    .IsRequired();
+            }
             b.HasIndex(x => x.Code).IsUnique();
 
             b.Property(x => x.Name)
