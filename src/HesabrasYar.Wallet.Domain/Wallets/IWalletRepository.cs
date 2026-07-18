@@ -8,6 +8,7 @@ namespace HesabrasYar.Wallet.Wallets;
 
 public interface IWalletRepository : IRepository<Wallet, Guid>
 {
+    Task<Wallet> FindByIdAsync(Guid id, CancellationToken cancellationToken = default);
     Task<Wallet> FindByNameAsync(string name, CancellationToken cancellationToken = default);
 
     Task<bool> NameExistsAsync(string name, Guid? excludeId = null, CancellationToken cancellationToken = default);

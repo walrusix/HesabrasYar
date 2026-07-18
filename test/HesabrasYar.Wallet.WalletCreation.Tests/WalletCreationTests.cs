@@ -18,7 +18,7 @@ public class WalletCreationTests : WalletEntityFrameworkCoreTestBase
         var userManager = GetRequiredService<IdentityUserManager>();
 
         var ownerId = Guid.NewGuid();
-        var ownerUser = new IdentityUser(ownerId, "test-user", "test-user@wallet.local");
+        var ownerUser = new IdentityUser(ownerId, "test-user"+Random.Shared.NextDouble().ToString(), "test-user@wallet.local");
 
         var createUserResult = await userManager.CreateAsync(ownerUser, "123456aA@");
         createUserResult.Succeeded.ShouldBeTrue();
@@ -34,9 +34,9 @@ public class WalletCreationTests : WalletEntityFrameworkCoreTestBase
         wallet.ShouldNotBeNull();
         wallet.Name.ShouldBe("Integration Test Wallet");
         wallet.InitialBalance.ShouldBe(1000m);
-        wallet.Balance.ShouldBe(1000m);
         wallet.OwnerId.ShouldBe(ownerId);
         wallet.IsActive.ShouldBeTrue();
         wallet.ParentWalletId.ShouldBeNull();
+        (await walletManager.GetWalletBalanceAsync(wallet.Id)).ShouldBe(1000m);
     }
 }

@@ -26,6 +26,15 @@ public class EfCoreWalletRepository : EfCoreRepository<WalletDbContext, Wallet, 
         );
     }
 
+    public async Task<Wallet> FindByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        var dbSet = await GetDbSetAsync();
+        return await dbSet.Include(p=>p.Balance).FirstOrDefaultAsync(
+            w => w.Id == id,
+            GetCancellationToken(cancellationToken)
+        );
+    }
+
     public async Task<bool> NameExistsAsync(string name, Guid? excludeId = null, CancellationToken cancellationToken = default)
     {
         var dbSet = await GetDbSetAsync();

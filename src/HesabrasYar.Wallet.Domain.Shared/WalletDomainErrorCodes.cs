@@ -17,4 +17,6 @@ public static class WalletDomainErrorCodes
     public const string WalletBalanceNotInitialized = "Wallet:00006";
 
     public const string ParentWalletOwnerMismatch = "Wallet:00007";
+    
+    public const string WalletNotFound = "Wallet:00008";
 }

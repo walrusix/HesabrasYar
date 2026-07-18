@@ -83,6 +83,16 @@ public class WalletManager : DomainService
         }
     }
 
+    public async Task <Decimal> GetWalletBalanceAsync(Guid walletId)
+    {
+        var wallet = await _walletRepository.FindByIdAsync(walletId);
+        if (wallet == null)
+        {
+            throw new BusinessException(WalletDomainErrorCodes.WalletNotFound)
+                .WithData("walletId", walletId);
+        }
+        return wallet.Balance.Balance;
+    }   
     private async Task CheckParentBelongsToOwnerAsync(Guid parentWalletId, Guid ownerId)
     {
         var parentWallet = await _walletRepository.FindAsync(parentWalletId);
