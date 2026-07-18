@@ -1,0 +1,19 @@
+{
+  "culture": "en",
+  "texts": {
+    "AppName": "Wallet",
+    "Menu:Home": "Home",
+    "Welcome": "Welcome",
+    "LongWelcomeMessage": "Welcome to the application. This is a startup project based on the ABP framework. For more information, visit abp.io.",
+    "Permission:Wallet": "Wallet",
+    "Permission:Wallets": "Wallets",
+    "Permission:Wallets.Create": "Create Wallet",
+    "Wallet:00001": "A wallet with this name already exists.",
+    "Wallet:00002": "Parent wallet not found.",
+    "Wallet:00003": "A wallet cannot be its own parent.",
+    "Wallet:00004": "Insufficient wallet balance.",
+    "Wallet:00005": "This wallet's balance has already been initialized.",
+    "Wallet:00006": "This wallet's balance has not been initialized yet.",
+    "Wallet:00007": "The parent wallet does not belong to the same owner."
+  }
+}
