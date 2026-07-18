@@ -2,7 +2,31 @@
 
 ## About this solution
 
-This is a layered startup solution based on [Domain Driven Design (DDD)](https://abp.io/docs/latest/framework/architecture/domain-driven-design) practises. All the fundamental ABP modules are already installed. 
+This is a layered startup solution based on [Domain Driven Design (DDD)](https://abp.io/docs/latest/framework/architecture/domain-driven-design) practises. All the fundamental ABP modules are already installed.
+
+### Problem analysis
+
+- The scenario assumes that users have unique wallets upon entering the system, and they may later request to create new wallets.
+- Wallets can optionally have a parent wallet. A user’s parent wallet must belong to the same user.
+
+### Architecture
+
+- The architecture applied in this solution is Domain-Driven Design (DDD), which is also aligned with ABP standards.
+- This architecture is a suitable choice because the wallet problem is domain-centric and the wallet itself is treated as a rich domain.
+
+### Domain design
+
+- The domain design is based on three main domain concepts. `Wallet` is the aggregate root. `Balance` has a one-to-one relationship with the main domain, and `Transactions` is the source of truth with a one-to-many relationship from `Wallet` to `Balance`.
+- The `Transactions` table is designed as append-only, and records are only inserted. When a record is added, corresponding changes must be made in the `Balance` table. Given the sensitivity of this process, it must be transactional and managed by the Unit of Work (UOW).
+
+### Extensibility
+
+- The class design aims to use different patterns where possible, and domain operations are managed by the root. Classes and especially methods follow the Single Responsibility Principle (SRP).
+- Defining the aggregate root prevents detached, rootless domains, which is an important DDD design principle. Boundaries are designed intentionally and strongly.
+
+### Developer outputs
+
+- For developers who use this service or integrate with third-party sources in development, the solution provides OpenAPI documentation, along with Swagger UI and Scalar.
 
 ### Pre-requirements
 
@@ -54,13 +78,5 @@ This is a layered monolith application that consists of the following applicatio
 
 * `HesabrasYar.Wallet.DbMigrator`: A console application which applies the migrations and also seeds the initial data. It is useful on development as well as on production environment.
 
-### Deploying the application
+- Domain migrations are handled by a separate migrator project. If CI/CD is required, this project can be executed during the deployment pipeline before the main application runs, performing database migrations and any necessary seeding.
 
-Deploying an ABP application is not different than deploying any .NET or ASP.NET Core application. However, there are some topics that you should care about when you are deploying your applications. You can check ABP's [Deployment documentation](https://abp.io/docs/latest/deployment) before deploying your application.
-
-### Additional resources
-
-You can see the following resources to learn more about your solution and the ABP Framework:
-
-* [Web Application Development Tutorial](https://abp.io/docs/latest/tutorials/book-store/part-01?UI=Blazor&DB=EF)
-* [Application Startup Template Structure](https://abp.io/docs/latest/solution-templates/layered-web-application)
