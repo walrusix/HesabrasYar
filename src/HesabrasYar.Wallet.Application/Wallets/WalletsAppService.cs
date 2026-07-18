@@ -7,7 +7,7 @@ using Volo.Abp.Users;
 
 namespace HesabrasYar.Wallet.Wallets;
 
-[Authorize(WalletPermissions.Wallets.Default)]
+
 public class WalletsAppService : WalletAppService, IWalletAppService
 {
     private readonly WalletManager _walletManager;
@@ -19,7 +19,7 @@ public class WalletsAppService : WalletAppService, IWalletAppService
         _walletRepository = walletRepository;
     }
 
-    [Authorize(WalletPermissions.Wallets.Create)]
+  //  [Authorize(WalletPermissions.Wallets.Create)]
     public async Task<WalletDto> CreateAsync(CreateWalletDto input)
     {
         var wallet = await _walletManager.CreateAsync(
